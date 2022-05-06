@@ -11,6 +11,9 @@ class Shiftbid(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     shift_status = models.CharField(max_length=1,choices=SHIFTSTATUS, default='c')
 
+    class Meta:
+        ordering = ['-date_created']
+
     def __str__(self):
         return f"Shiftbid: {self.shiftbid_name}"
 
