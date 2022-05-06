@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, DeleteView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.shortcuts import render
 
 from .models import Shiftbid
@@ -30,7 +30,6 @@ class ShiftbidCreateView(CreateView):
             shiftbid = Shiftbid.objects.create(shiftbid_name=shiftbid_name)
             shiftbid.save()
             # handle file upload 
-            print(request.FILES['shift_file'])
             handleShiftFile(shiftBid=shiftbid,file=request.FILES['shift_file'])
             handleSeniorityFile(shiftBid=shiftbid, file=request.FILES['seniority_file'])
             

@@ -26,10 +26,16 @@ Shiftbid
             <td>{{ shiftbid.date_created }}</td>
             <td>{{ shiftbid.shift_status }}</td>
             <!-- Need to use form -->
+            {% if shiftbid.shift_status != 's' %}
             <form action={% url 'shiftbid_delete' pk=shiftbid.pk %} method="post">
                 {% csrf_token %}
-                <td><button type="submit" class="btn btn-danger">DELETE</button></td>
+                <td>
+                    <button type="submit" class="btn btn-danger">DELETE
+                    </button>
+                </td>
             </form>
+            {% endif %}
+
         </tr>
         {% endfor %}
     </tbody>
