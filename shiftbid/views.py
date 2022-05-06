@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, DeleteView
 from django.shortcuts import render
 
 from .models import Shiftbid
@@ -36,3 +36,7 @@ class ShiftbidCreateView(CreateView):
             
             return HttpResponseRedirect(reverse_lazy('shiftbid_index'))
         return render(request, 'shiftbid/create.html', {'form': form})
+
+class ShiftbidDeleteView(DeleteView):
+    model = Shiftbid
+    success_url = reverse_lazy('shiftbid_index')

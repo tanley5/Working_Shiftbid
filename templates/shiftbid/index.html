@@ -7,6 +7,9 @@ Shiftbid
 {% block content %}
 <h1 class="text-center">Shiftbid Homepage</h1>
 <!-- FORM TO SUBMIT NEW SHIFTBID -->
+<div class="container">
+    <a href="{% url 'shiftbid_create' %}" class="btn btn-primary">Create</a>
+</div>
 <table class="table table-hover">
     <thead>
         <tr>
@@ -23,7 +26,10 @@ Shiftbid
             <td>{{ shiftbid.date_created }}</td>
             <td>{{ shiftbid.shift_status }}</td>
             <!-- Need to use form -->
-            <td><button type="submit" class="btn btn-danger">DELETE</button></td>
+            <form action={% url 'shiftbid_delete' pk=shiftbid.pk %} method="post">
+                {% csrf_token %}
+                <td><button type="submit" class="btn btn-danger">DELETE</button></td>
+            </form>
         </tr>
         {% endfor %}
     </tbody>
