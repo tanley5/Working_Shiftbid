@@ -9,6 +9,8 @@ from django.shortcuts import render
 from .models import Shiftbid
 from .forms import ShiftbidCreateForm
 
+# handle file upload import
+
 class ShiftbidIndexView(ListView):
     template_name = 'shiftbid/index.html'
     model = Shiftbid
@@ -20,9 +22,13 @@ class ShiftbidCreateView(CreateView):
         return render(request,'shiftbid/create.html', context=context)
 
     def post(self,request,*args,**kwargs):
-        form = ShiftbidCreateForm(request.POST)
+        form = ShiftbidCreateForm(request.POST,request.FILES)
         if form.is_valid():
-            shiftbid = form.save()
+            data = form.cleaned_data
+            shiftbid_name = data['shiftbid_name']
+            shiftbid = Shiftbid.objects.create(shiftbid_name=shiftbid_name)
+            # handle file upload 
+            
             shiftbid.save()
             return HttpResponseRedirect(reverse_lazy('shiftbid_index'))
         return render(request, 'shiftbid/create.html', {'form': form})
