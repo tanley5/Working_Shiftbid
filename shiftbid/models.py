@@ -23,3 +23,11 @@ class Seniority(models.Model):
     
     def __str__(self):
         return f"{self.agent_name} with seniority number {self.seniority_number}"
+
+class Shift(models.Model):
+    shift_description = models.CharField(max_length= 100)
+    agent_email = models.EmailField(null=True)
+    shiftbid = models.ForeignKey(Shiftbid, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.shift_description}"
