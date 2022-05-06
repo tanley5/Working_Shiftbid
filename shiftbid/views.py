@@ -10,6 +10,7 @@ from .models import Shiftbid
 from .forms import ShiftbidCreateForm
 
 # handle file upload import
+from utils.shiftbid.filehandlers import handleSeniorityFile, handleShiftFile
 
 class ShiftbidIndexView(ListView):
     template_name = 'shiftbid/index.html'
@@ -27,8 +28,11 @@ class ShiftbidCreateView(CreateView):
             data = form.cleaned_data
             shiftbid_name = data['shiftbid_name']
             shiftbid = Shiftbid.objects.create(shiftbid_name=shiftbid_name)
-            # handle file upload 
-            
             shiftbid.save()
+            # handle file upload 
+            print(request.FILES['shift_file'])
+            handleShiftFile(shiftBid=shiftbid,file=request.FILES['shift_file'])
+            handleSeniorityFile(shiftBid=shiftbid, file=request.FILES['seniority_file'])
+            
             return HttpResponseRedirect(reverse_lazy('shiftbid_index'))
         return render(request, 'shiftbid/create.html', {'form': form})
