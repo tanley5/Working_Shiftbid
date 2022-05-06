@@ -1,6 +1,6 @@
 from django.db import models
 
-class Shfitbid(models.Model):
+class Shiftbid(models.Model):
     SHIFTSTATUS = (
         ('c','created'),
         ('s','started'),
@@ -13,3 +13,13 @@ class Shfitbid(models.Model):
 
     def __str__(self):
         return f"Shiftbid: {self.shiftbid_name}"
+
+class Seniority(models.Model):
+    seniority_number = models.PositiveIntegerField()
+    agent_name = models.CharField(max_length=50)
+    agent_email = models.EmailField()
+
+    shiftbid = models.ForeignKey(Shiftbid, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return f"{self.agent_name} with seniority number {self.seniority_number}"
