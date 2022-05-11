@@ -16,6 +16,7 @@ Shiftbid
             <th scope="col">Shiftbid Name</th>
             <th scope="col">Date Created</th>
             <th scope="col">Status</th>
+            <th scope="col">View</th>
             <th scope="col">Delete</th>
         </tr>
     </thead>
@@ -25,6 +26,7 @@ Shiftbid
             <th scope="row">{{ shiftbid.shiftbid_name }}</th>
             <td>{{ shiftbid.date_created }}</td>
             <td>{{ shiftbid.shift_status }}</td>
+            <td><a href="{% url 'shiftbid_display' pk=shiftbid.pk %}" class="btn btn-secondary">View</a></td>
             <!-- Need to use form -->
             {% if shiftbid.shift_status != 's' %}
             <form action={% url 'shiftbid_delete' pk=shiftbid.pk %} method="post">

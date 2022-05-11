@@ -18,10 +18,18 @@ class Shiftbid(models.Model):
         return f"Shiftbid: {self.shiftbid_name}"
 
 class Seniority(models.Model):
+    SENIORITYSTATUS = (
+        ('c','created'),
+        ('s','sent'),
+        ('f','finished')
+    )
+
     seniority_number = models.PositiveIntegerField()
     agent_name = models.CharField(max_length=50)
     agent_email = models.EmailField()
 
+    seniority_status = models.CharField(max_length=1,choices = SENIORITYSTATUS, default='c')
+    
     shiftbid = models.ForeignKey(Shiftbid, on_delete=models.CASCADE)
     
     def __str__(self):

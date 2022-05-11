@@ -1,12 +1,14 @@
 from multiprocessing import context
+from typing import List
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic import View
 from django.shortcuts import render
 
-from .models import Shiftbid
+from .models import Shiftbid, Seniority,Shift
 from .forms import ShiftbidCreateForm
 
 # handle file upload import
@@ -39,3 +41,18 @@ class ShiftbidCreateView(CreateView):
 class ShiftbidDeleteView(DeleteView):
     model = Shiftbid
     success_url = reverse_lazy('shiftbid_index')
+
+class ShiftbidDisplayView(View):
+    model1 = Shiftbid
+    model2 = Seniority
+    model3 = Shift
+    
+    def get(self,request,*args,**kwargs):
+        sb = self.model1.objects.get(pk = kwargs['pk'])
+        shifts = self.model3.objects.filter(shiftbid = sb)
+        seniorities = self.model2.objects.filter(shiftbid = sb)
+        context = {
+            "shifts": shifts,
+            "seniorities": seniorities
+        }
+        return render(request,'shiftbid/shiftbid_display.html',context=context)

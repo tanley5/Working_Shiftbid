@@ -1,0 +1,53 @@
+{% extends '../_base.html' %}
+
+{% block title %}
+Shiftbid Display
+{% endblock title %}
+
+{% block content %}
+<table class="table">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col">Shiftbid</th>
+            <th scope="col">Seniority Number</th>
+            <th scope="col">Agent Name</th>
+            <th scope="col">Agent Email</th>
+            <th scope="col">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for seniority in seniorities %}
+        <tr>
+            <th scope="row">{{seniority.shiftbid.shiftbid_name}}</th>
+            <td>{{seniority.seniority_number}}</td>
+            <td>{{seniority.agent_name}}</td>
+            <td>{{seniority.agent_email}}</td>
+            <td>{{seniority.seniority_status}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">Shiftbid</th>
+            <th scope="col">Description</th>
+            <th scope="col">Agent Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for shift in shifts %}
+        <tr>
+            <th scope="row">{{shift.shiftbid.shiftbid_name}}</th>
+            <td>{{shift.shift_description}}</td>
+            <td>{{shift.agent_email}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'shiftbid_index' %}" class="btn btn-primary">Back To All Shiftbids</a>
+
+
+{% endblock content %}
