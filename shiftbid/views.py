@@ -56,3 +56,11 @@ class ShiftbidDisplayView(View):
             "seniorities": seniorities
         }
         return render(request,'shiftbid/shiftbid_display.html',context=context)
+
+class ShiftbidChangeStateView(UpdateView):
+    model = Shiftbid
+    fields = ["shift_status"]
+    success_url = reverse_lazy('shiftbid_index')
+    template_name = 'shiftbid/shiftbid_change.html'
+
+        

@@ -1,0 +1,18 @@
+{% extends '../_base.html' %}
+
+{% block title %}
+Shiftbid Start/Stop
+{% endblock title %}
+
+{% block content %}
+<div class="alert alert-secondary" role="alert">
+    Are you sure you want to change the Shiftbid Status?
+</div>
+<form action="" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input class="btn btn-primary" type="submit" value="Confirm">
+</form>
+<hr>
+<a href="{% url 'shiftbid_index' %}" class="btn btn-primary">Back To All Shiftbids</a>
+{% endblock content %}
