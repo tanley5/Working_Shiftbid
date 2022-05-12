@@ -9,10 +9,11 @@ from django.views.generic import View
 from django.shortcuts import render
 
 from .models import Shiftbid, Seniority,Shift
-from .forms import ShiftbidCreateForm
+from .forms import ShiftbidCreateForm, ShiftbidResponseForm
 
 # handle file upload import
 from utils.shiftbid.filehandlers import handleSeniorityFile, handleShiftFile
+from utils.shiftbid.responsehandler import handle_response_submission
 
 class ShiftbidIndexView(ListView):
     template_name = 'shiftbid/index.html'
@@ -63,4 +64,26 @@ class ShiftbidChangeStateView(UpdateView):
     success_url = reverse_lazy('shiftbid_index')
     template_name = 'shiftbid/shiftbid_change.html'
 
+class ShiftbidResponseFormView(View):
+    template_name = 'shiftbid/response_collection.html'
+
+    def get(self, request, *args, **kwargs):
+        sb_pk = self.kwargs["pk"]
+        form = ShiftbidResponseForm(pk=sb_pk)
+        context = {'form': form}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        sb_pk = self.kwargs["pk"]
+        print(sb_pk)
+        form = ShiftbidResponseForm(data=request.POST,
+                            pk=sb_pk)
+        context = {'form': form}
         
+        if form.is_valid():
+            shift_chosen = form.cleaned_data["Shiftbid"][0].pk
+            email = form.cleaned_data["agent_email"]
+            handle_response_submission(shift_chosen, email)
+            form = ShiftbidResponseForm(pk=sb_pk)
+            return render(request, 'shiftbid/response_thanks.html', context)
+        return render(request, self.template_name, context)

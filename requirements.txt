@@ -1,5 +1,7 @@
 asgiref==3.5.1
+crispy-bootstrap5==0.6
 Django==4.0.4
+django-crispy-forms==1.14.0
 django-filter==21.1
 djangorestframework==3.13.1
 et-xmlfile==1.1.0
