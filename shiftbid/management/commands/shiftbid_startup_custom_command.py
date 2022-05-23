@@ -1,13 +1,13 @@
+from ctypes import util
 from django.core.management.base import BaseCommand, CommandError
 import schedule
 import time
 from shiftbid.models import Shiftbid, Seniority, Shift
+from utils.shiftbid.background import BackgroundTaskFunction
 
 def scheduled_task():
-    print("Started At Startup")
-    sb = Shiftbid.objects.all()
-    for i in sb:
-        print(i)
+    print("Scheduled")
+    BackgroundTaskFunction()
 
 class Command(BaseCommand):
     help = 'My custom startup command'
