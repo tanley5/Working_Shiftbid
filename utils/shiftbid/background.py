@@ -22,26 +22,30 @@ def BackgroundTaskFunction():
 def GroupingObjectsToShiftbid(sb):
     shifts = Shift.objects.filter(shiftbid = sb)
     seniorities = Seniority.objects.filter(shiftbid = sb)
+    WorkingFunction(shifts=shifts,seniorities=seniorities,shiftbid=sb)
     return f"{sb.shiftbid_name} Grouping Complete"
 
 # Knowing when to end the tasks by seeing if the length of seniorit is equals to the length of shifts with "not null" agent email
-def EndingFunction(shifts, seniorities, shiftbid):
+def WorkingFunction(shifts, seniorities, shiftbid):
     seniority_length = len(seniorities)
     filled_shift_length = len([filled_sh_len for filled_sh_len in shifts if filled_sh_len.agent_email != None])
     if seniority_length == filled_shift_length:
         print("Complete")
         LastTaskPriorToClosing(shiftbid)
     else:
+        ShiftbidStartingProcedure(shifts=shifts,seniorities=seniorities,shiftbid=shiftbid)
         print("Not Complete")
 
 # The last task when a project has been completed
 def LastTaskPriorToClosing(shiftbid):
     # send email with the file to Admin
     # switch shiftbid status to "completed"
+    # shiftbid.shift_status = 'c'
+    # shiftbid.save()
     pass
 
 # The starting condition
-def ShiftbidStartingProcedure():
+def ShiftbidStartingProcedure(shifts,seniorities,shiftbid):
     # get all started/running shiftbids
     # 
     pass
