@@ -1,4 +1,5 @@
 from shiftbid.models import Shiftbid,Seniority,Shift
+from django.db.models import Min
 
 # The purpose of this file is to hold the function that will run in the background
 # 1. We give the condition to stop the task
@@ -46,6 +47,21 @@ def LastTaskPriorToClosing(shiftbid):
 
 # The starting condition
 def ShiftbidStartingProcedure(shifts,seniorities,shiftbid):
-    # get all started/running shiftbids
-    # 
-    pass
+    # get all the seniority statuses
+    # if there is seniority with 'sent' status, that means we are still waiting for a reply from the 'sent' person
+    # if there are non witht he sent status, we will filter the 'unassigned_seniorities' to find the lowest seniority_number
+    # We then get the object's email 
+    # after sending the email with link we change the seniority_status to 'sent'
+    unassigned_seniority = seniorities.filter(seniority_status = 'c')
+    assigned_seniority = seniorities.filter(seniority_status = 'f')
+    sent_seniority = seniorities.filter(seniority_status = 's')
+
+    if len(sent_seniority) == 0:
+        staged_seniority = unassigned_seniority.get(seniority_number = (unassigned_seniority.aggregate(Min('seniority_number'))['seniority_number__min']))
+        staged_seniority_email = staged_seniority.agent_email
+        # send email
+        # switch the staged_seniority to 'sent' status
+        # staged_seniority.seniority_status = 's'
+        # staged_seniority.save()
+    else:
+        pass
