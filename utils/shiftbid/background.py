@@ -1,5 +1,7 @@
 from shiftbid.models import Shiftbid,Seniority,Shift
 from django.db.models import Min
+from django.core.mail import send_mail
+from django.conf import settings
 
 # The purpose of this file is to hold the function that will run in the background
 # 1. We give the condition to stop the task
@@ -9,9 +11,9 @@ from django.db.models import Min
 
 # main runner function
 def BackgroundTaskFunction():
-    shiftbids = Shiftbid.objects.filter(shift_status = 's')
+    # shiftbids = Shiftbid.objects.filter(shift_status = 's')
     # The line below is for testing only. Use the line above for production
-    #shiftbids = Shiftbid.objects.filter(shift_status = 'c')
+    shiftbids = Shiftbid.objects.filter(shift_status = 'c')
     if len(shiftbids) == 0:
         print("No Shiftbids")
         return
@@ -60,6 +62,14 @@ def ShiftbidStartingProcedure(shifts,seniorities,shiftbid):
         staged_seniority = unassigned_seniority.get(seniority_number = (unassigned_seniority.aggregate(Min('seniority_number'))['seniority_number__min']))
         staged_seniority_email = staged_seniority.agent_email
         # send email
+        # Email Content Data
+        sb_pk = shiftbid.id
+        sb_name = shiftbid.shiftbid_name
+        
+        subject = f"{sb_name} Shiftbid"
+        message = f"Please Access The Shiftbid On This Link: localhost:8000/sb/response/{sb_pk}"
+        send_mail(subject = subject,message = message,from_email='admin@email.com',recipient_list=['test@email.com'],)
+    
         # switch the staged_seniority to 'sent' status
         # staged_seniority.seniority_status = 's'
         # staged_seniority.save()
