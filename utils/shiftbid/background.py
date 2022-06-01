@@ -1,3 +1,4 @@
+from re import sub
 from shiftbid.models import Shiftbid,Seniority,Shift
 from django.db.models import Min
 from django.core.mail import send_mail
@@ -42,9 +43,13 @@ def WorkingFunction(shifts, seniorities, shiftbid):
 # The last task when a project has been completed
 def LastTaskPriorToClosing(shiftbid):
     # send email with the file to Admin
+    sb_name = shiftbid.shiftbid_name
+
+    subject = f"{sb_name} Shiftbid Completed"
+    send_mail(subject=subject, message="Shiftbid Complete. Check the following link.",from_email="admin@email.com", recipient_list=["recipient@email.com"])
     # switch shiftbid status to "completed"
-    # shiftbid.shift_status = 'c'
-    # shiftbid.save()
+    shiftbid.shift_status = 'c'
+    shiftbid.save()
     pass
 
 # The starting condition
