@@ -12,33 +12,33 @@ from django.conf import settings
 
 # main runner function
 def BackgroundTaskFunction():
-    # shiftbids = Shiftbid.objects.filter(shift_status = 's')
+    shiftbids = Shiftbid.objects.filter(shift_status = 's')
     # The line below is for testing only. Use the line above for production
-    shiftbids = Shiftbid.objects.filter(shift_status = 'c')
+    # shiftbids = Shiftbid.objects.filter(shift_status = 'c')
     if len(shiftbids) == 0:
-        print("No Shiftbids")
+        # print("No Shiftbids")
         return
     else:
         for sb in shiftbids:
-            print(GroupingObjectsToShiftbid(sb))
+            GroupingObjectsToShiftbid(sb)
 
 # Grouping objects to the Shiftbid
 def GroupingObjectsToShiftbid(sb):
     shifts = Shift.objects.filter(shiftbid = sb)
     seniorities = Seniority.objects.filter(shiftbid = sb)
     WorkingFunction(shifts=shifts,seniorities=seniorities,shiftbid=sb)
-    return f"{sb.shiftbid_name} Grouping Complete"
+    #return f"{sb.shiftbid_name} Grouping Complete, Shiftbid Started"
 
 # Knowing when to end the tasks by seeing if the length of seniorit is equals to the length of shifts with "not null" agent email
 def WorkingFunction(shifts, seniorities, shiftbid):
     seniority_length = len(seniorities)
-    filled_shift_length = len([filled_sh_len for filled_sh_len in shifts if filled_sh_len.agent_email != None])
+    filled_shift_length = len([filled_sh_len for filled_sh_len in shifts if filled_sh_len.agent_email != None and filled_sh_len != ''])
     if seniority_length == filled_shift_length:
-        print("Complete")
+        # print("Complete")
         LastTaskPriorToClosing(shiftbid)
     else:
         ShiftbidStartingProcedure(shifts=shifts,seniorities=seniorities,shiftbid=shiftbid)
-        print("Not Complete")
+        # print("Not Complete")
 
 # The last task when a project has been completed
 def LastTaskPriorToClosing(shiftbid):
@@ -48,7 +48,7 @@ def LastTaskPriorToClosing(shiftbid):
     subject = f"{sb_name} Shiftbid Completed"
     send_mail(subject=subject, message="Shiftbid Complete. Check the following link.",from_email="admin@email.com", recipient_list=["recipient@email.com"])
     # switch shiftbid status to "completed"
-    shiftbid.shift_status = 'c'
+    shiftbid.shift_status = 'e'
     shiftbid.save()
     pass
 
@@ -76,7 +76,7 @@ def ShiftbidStartingProcedure(shifts,seniorities,shiftbid):
         send_mail(subject = subject,message = message,from_email='admin@email.com',recipient_list=['test@email.com'],)
     
         # switch the staged_seniority to 'sent' status
-        # staged_seniority.seniority_status = 's'
-        # staged_seniority.save()
+        staged_seniority.seniority_status = 's'
+        staged_seniority.save()
     else:
         pass

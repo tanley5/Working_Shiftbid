@@ -83,7 +83,7 @@ class ShiftbidResponseFormView(View):
         if form.is_valid():
             shift_chosen = form.cleaned_data["Shiftbid"][0].pk
             email = form.cleaned_data["agent_email"]
-            handle_response_submission(shift_chosen, email)
+            handle_response_submission(shift_chosen, email, sb_pk)
             form = ShiftbidResponseForm(pk=sb_pk)
             return render(request, 'shiftbid/response_thanks.html', context)
         return render(request, self.template_name, context)
