@@ -46,7 +46,7 @@ def LastTaskPriorToClosing(shiftbid):
     sb_name = shiftbid.shiftbid_name
 
     subject = f"{sb_name} Shiftbid Completed"
-    send_mail(subject=subject, message="Shiftbid Complete. Check the following link.",from_email="admin@email.com", recipient_list=["recipient@email.com"])
+    send_mail(subject=subject, message=f"Shiftbid Complete. Check the following link: localhost:8000/sb/display/{shiftbid.pk}",from_email="admin@email.com", recipient_list=["recipient@email.com"])
     # switch shiftbid status to "completed"
     shiftbid.shift_status = 'e'
     shiftbid.save()
@@ -73,7 +73,7 @@ def ShiftbidStartingProcedure(shifts,seniorities,shiftbid):
         
         subject = f"{sb_name} Shiftbid"
         message = f"Please Access The Shiftbid On This Link: localhost:8000/sb/response/{sb_pk}"
-        send_mail(subject = subject,message = message,from_email='admin@email.com',recipient_list=['test@email.com'],)
+        send_mail(subject = subject,message = message,from_email='admin@email.com',recipient_list=[f'{staged_seniority_email}'],)
     
         # switch the staged_seniority to 'sent' status
         staged_seniority.seniority_status = 's'
