@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 
     # Local
     'shiftbid.apps.ShiftbidConfig',
+    'pages.apps.PagesConfig',
 ]
 
 MIDDLEWARE = [
